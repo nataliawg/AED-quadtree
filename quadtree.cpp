@@ -99,32 +99,48 @@ public:
         insertInTree(root, K, tag);
     }
 
-    NodoQuad<T>* deleteNode(NodoQuad<T>* R, Punto K) {
-        if (R == NULL) return NULL;
+NodoQuad<T>* deleteNode(NodoQuad<T>* R, Punto K) {
+    if (R == NULL) return NULL;
 
-        // Si encontramos el nodo a eliminar
-        if (R->punto.x == K.x && R->punto.y == K.y) {
-            delete R;
-            return NULL;
+    // Si encontramos el nodo a eliminar
+    if (R->punto.x == K.x && R->punto.y == K.y) {
+        // Si el nodo tiene hijos, uno de los hijos subirá como padre
+        if (R->NW != NULL) {
+            return R->NW;  // El hijo NW sube como padre
         }
-
-        int comp = compare(R->punto, K);
-
-        if (comp == 1) {
-            R->NW = deleteNode(R->NW, K);
+        else if (R->NE != NULL) {
+            return R->NE;  // El hijo NE sube como padre
         }
-        else if (comp == 2) {
-            R->NE = deleteNode(R->NE, K);
+        else if (R->SW != NULL) {
+            return R->SW;  // El hijo SW sube como padre
         }
-        else if (comp == 3) {
-            R->SW = deleteNode(R->SW, K);
-        }
-        else if (comp == 4) {
-            R->SE = deleteNode(R->SE, K);
+        else if (R->SE != NULL) {
+            return R->SE;  // El hijo SE sube como padre
         }
 
-        return R;
+        // Si no tiene hijos, simplemente lo eliminamos
+        delete R;
+        return NULL;
     }
+
+    int comp = compare(R->punto, K);
+
+    if (comp == 1) {
+        R->NW = deleteNode(R->NW, K);  // Eliminamos recursivamente en el cuadrante NW
+    }
+    else if (comp == 2) {
+        R->NE = deleteNode(R->NE, K);  // Eliminamos recursivamente en el cuadrante NE
+    }
+    else if (comp == 3) {
+        R->SW = deleteNode(R->SW, K);  // Eliminamos recursivamente en el cuadrante SW
+    }
+    else if (comp == 4) {
+        R->SE = deleteNode(R->SE, K);  // Eliminamos recursivamente en el cuadrante SE
+    }
+
+    return R;  // Retornamos el nodo después de intentar eliminarlo
+}
+
 
     void remove(Punto K) {
         if (root == NULL) {
