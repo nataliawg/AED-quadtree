@@ -35,6 +35,11 @@ public:
     QuadTree(int x, int y) : limitX(x), limitY(y), root(NULL) {}
 
     int compare(Punto R, Punto K) {
+        // Se verifica que no se salga del espacio asignado del quadtree
+        if(K.x>limitX ||K.y>limitY){
+            return 0;
+        }
+        
         // Si retorna 1 es NW, si retorna 2 es NE, si es 3 SW, si es 4 es SE.
         if (R.x > K.x && R.y >= K.y) {
             return 1;
@@ -48,7 +53,7 @@ public:
         else if (R.x <= K.x && R.y < K.y) {
             return 4;
         }
-        //si es 0 está fuera del rango
+        //default
         return 0;
     }
 
