@@ -1,16 +1,11 @@
-cmake_minimum_required(VERSION 3.16)
-project(QuadTreeGraphics)
+cmake_minimum_required(VERSION 3.15)
+project(untitled2)
 
 set(CMAKE_CXX_STANDARD 17)
 
-# Ruta a SFML
-set(SFML_DIR "C:/Users/DELL/CLionProjects/QuadTreeGraphics/cmake-build-debug/SFML-2.6.2")  # Cambia esta ruta según tu sistema
+set(SFML_DIR "C:/Users/NATALIA WATSON/Downloads/SFML-2.6.2-windows-gcc-13.1.0-mingw-64-bit/SFML-2.6.2/lib/cmake/SFML")
 
-# Incluir SFML
-find_package(SFML 2.5 COMPONENTS graphics window system REQUIRED)
+find_package(SFML COMPONENTS graphics window system REQUIRED)
 
-# Archivo fuente
-add_executable(QuadTreeGraphics main.cpp)
-
-# Enlazar las bibliotecas de SFML
-target_link_libraries(QuadTreeGraphics sfml-graphics sfml-window sfml-system)
+add_executable(AED-quadtree main.cpp quadtree.cpp)
+target_link_libraries(AED-quadtree sfml-graphics sfml-window sfml-system)
