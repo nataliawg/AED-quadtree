@@ -20,6 +20,7 @@ public:
     Punto punto;
     T dato;
     NodoQuad* NW, * NE, * SW, * SE;
+
     NodoQuad(int x, int y, T data) : punto(Punto(x, y)), dato(data), NW(NULL), NE(NULL), SE(NULL), SW(NULL) {}
 };
 
@@ -35,7 +36,6 @@ public:
 
     int compare(Punto R, Punto K) {
         // Si retorna 1 es NW, si retorna 2 es NE, si es 3 SW, si es 4 es SE.
-
         if (R.x > K.x && R.y > K.y) {
             return 1;
         }
@@ -48,8 +48,7 @@ public:
         else if (R.x < K.x && R.y < K.y) {
             return 4;
         }
-
-        //si es 0 esta fuera del rango
+        //si es 0 está fuera del rango
         return 0;
     }
 
@@ -149,14 +148,37 @@ public:
         if (root->SE) cout << "Raíz SE: " << root->SE->dato << endl;
     }
 
-
-
     void display() {
         if (root == NULL) {
             cout << "Árbol vacío." << endl;
-        } else {
-            getStruct(root);
         }
+        else {
+            getStruct();
+        }
+    }
+
+    // Método de búsqueda recursiva
+    NodoQuad<T>* searchInTree(NodoQuad<T>* node, Punto K) {
+        if (node == NULL) return NULL;
+
+        // Si encontramos el nodo
+        if (node->punto.x == K.x && node->punto.y == K.y) {
+            return node;
+        }
+
+        // Si el nodo no es el que buscamos, seguimos buscando en los cuadrantes correspondientes
+        int comp = compare(node->punto, K);
+        if (comp == 1) return searchInTree(node->NW, K);
+        else if (comp == 2) return searchInTree(node->NE, K);
+        else if (comp == 3) return searchInTree(node->SW, K);
+        else if (comp == 4) return searchInTree(node->SE, K);
+
+        return NULL; // Nodo no encontrado
+    }
+
+    // Método de búsqueda
+    NodoQuad<T>* search(Punto K) {
+        return searchInTree(root, K);
     }
 
     void draw(sf::RenderWindow& window, NodoQuad<T>* node, sf::VertexArray& lines) {
